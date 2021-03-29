@@ -304,6 +304,17 @@ public class GLMModel extends Model<GLMModel,GLMModel.GLMParameters,GLMModel.GLM
     public boolean _generate_scoring_history = false; // if true, will generate scoring history but will slow algo down
     
     public void validate(GLM glm) {
+      if (_remove_collinear_columns && !Solver.IRLSM.equals(_solver))
+        glm.warn("remove_collinear_columns", "remove_collinear_columns only works when IRLSM is " +
+                "chosen as the solver.  Otherwise, remove_collinear_columns is not enabled.");
+      if (_remove_collinear_columns){
+        if (_lambda != null) {
+          boolean nonZeroLambda = Arrays.stream(_lambda).sum() > 0;
+          if (nonZeroLambda)
+            glm.warn("remove_collinear_columns", "remove_collinear_columns should only be used with no " +
+                    "regularization, i.e. lambda=0.0.  It is used improperly here with L2 penalty");
+        }
+      }
       if (_solver.equals(Solver.COORDINATE_DESCENT_NAIVE) && _family.equals(Family.multinomial))
         throw H2O.unimpl("Naive coordinate descent is not supported for multinomial.");
       if ((_lambda != null) && _lambda_search)
