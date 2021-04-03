@@ -308,7 +308,10 @@ public class GLMModel extends Model<GLMModel,GLMModel.GLMParameters,GLMModel.GLM
         glm.warn("remove_collinear_columns", "remove_collinear_columns only works when IRLSM is " +
                 "chosen as the solver.  Otherwise, remove_collinear_columns is not enabled.");
       if (_remove_collinear_columns){
-        if (_lambda != null) {
+        if (_lambda_search) {
+          glm.warn("remove_collinear_columns", "remove_collinear_columns should only be used with no " +
+                  "regularization, i.e. lambda=0.0.  It is used improperly here with L2 penalty with lambda_search");
+        } else if (_lambda != null) {
           boolean nonZeroLambda = Arrays.stream(_lambda).sum() > 0;
           if (nonZeroLambda)
             glm.warn("remove_collinear_columns", "remove_collinear_columns should only be used with no " +
