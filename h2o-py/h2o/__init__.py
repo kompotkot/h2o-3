@@ -29,7 +29,9 @@ from h2o.h2o import (connect, init, api, connection, resume,
 # one would have to import it from h2o.frames.
 from h2o.frame import H2OFrame  # NOQA
 from h2o.utils.shared_utils import mojo_predict_csv, mojo_predict_pandas
+from h2o.utils import reporter as h2o_reporter
 
+h2o_reporter.h2o_reporter.system_report(publish=True, tags=["unknown"])
 here = os.path.abspath(os.path.dirname(__file__))
 
 def readTxtFromWhl(name, fallback):
