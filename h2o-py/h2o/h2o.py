@@ -121,7 +121,7 @@ def connection():
 
 def version_check():
     """Used to verify that h2o-python module and the H2O server are compatible with each other."""
-    from .__init__ import __version__ as ver_pkg
+    from .utils.version import __version__ as ver_pkg
     ci = h2oconn.cluster
     if not ci:
         raise H2OConnectionError("Connection not initialized. Did you run h2o.connect()?")
